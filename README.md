@@ -1,4 +1,4 @@
-<p align="left"><img src="https://github.com/Teichlab/cellhint/blob/main/docs/source/_static/img/logo_cellhint.png" width="250" height="85"></p>
+<p align="left"><img src="https://github.com/Teichlab/cellhint/blob/main/docs/source/_static/img/logo_cellhint.png" width="250" height="80"></p>
 
 [![Python Versions](https://img.shields.io/badge/python-3.6+-brightgreen.svg)](https://pypi.org/project/cellhint) [![Documentation Status](https://readthedocs.org/projects/cellhint/badge/?version=latest)](https://cellhint.readthedocs.io/en/latest/?badge=latest)
 
