@@ -1,0 +1,21 @@
+*.pyc
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+/*.egg
+
+env
+.eggs/
+build/
+build_doc.sh
+build_wheel.sh
+
+.DS_Store
+
+/**/__pycache__/
+
+# Symbolic soft link
+#docs/source/notebook
