@@ -1,33 +1,26 @@
 <p align="left"><img src="https://github.com/Teichlab/celltypist/blob/main/docs/source/_static/img/logo_celltypist.png" width="250" height="85"></p>
 
-[![Python Versions](https://img.shields.io/badge/python-3.6+-brightgreen.svg)](https://pypi.org/project/celltypist) [![Documentation Status](https://readthedocs.org/projects/celltypist/badge/?version=latest)](https://celltypist.readthedocs.io/en/latest/?badge=latest)
+[![Python Versions](https://img.shields.io/badge/python-3.6+-brightgreen.svg)](https://pypi.org/project/cellhint) [![Documentation Status](https://readthedocs.org/projects/cellhint/badge/?version=latest)](https://cellhint.readthedocs.io/en/latest/?badge=latest)
 
 CellHint is an automated tool for cell type harmonisation and integration.
 - _harmonisation_: match and harmonise cell types defined by independent datasets
 - _integration_: integrate cell and cell types with supervision from harmonisation
 
-# CellTypist website
-Information of CellTypist can be also found in our CellTypist portal. [![Website www.celltypist.org](https://img.shields.io/website-up-down-brightgreen-red/http/shields.io.svg)](https://www.celltypist.org/)
-
 # Interactive tutorials
-### Classification
-[Using CellTypist for cell type classification ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial.ipynb)  
-[Using CellTypist for multi-label classification ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_ml.ipynb)  
-[Best practice in large-scale cross-dataset label transfer using CellTypist ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_cv.ipynb)
 ### Harmonisation
-[Using CellTypist for cell type harmonisation ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_harmonisation.ipynb)
+[Using CellHint for cell type harmonisation ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_harmonisation.ipynb)
 ### Integration
-[Using CellTypist for annotation-aware data integration ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_integration.ipynb)
+[Using CellHint for annotation-aware data integration ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_integration.ipynb)
 
-# Install CellTypist
-### Using pip [![PyPI](https://img.shields.io/pypi/v/celltypist.svg?color=brightgreen&style=flat)](https://pypi.org/project/celltypist)
+# Install CellHint
+### Using pip [![PyPI](https://img.shields.io/pypi/v/celltypist.svg?color=brightgreen&style=flat)](https://pypi.org/project/cellhint)
 ```console
-pip install celltypist
+pip install cellhint
 ```
 
-### Using conda [![install with bioconda](https://img.shields.io/conda/vn/bioconda/celltypist.svg?color=brightgreen&style=flat)](https://anaconda.org/bioconda/celltypist)
+### Using conda [![install with bioconda](https://img.shields.io/conda/vn/bioconda/celltypist.svg?color=brightgreen&style=flat)](https://anaconda.org/bioconda/cellhint)
 ```console
-conda install -c bioconda -c conda-forge celltypist
+conda install -c bioconda -c conda-forge cellhint
 ```
 
 # Usage (harmonisation)
@@ -68,7 +61,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>1.3. Specify the dataset order</strong></summary>
 
-  In CellTypist, datasets are iteratively incorporated and harmonised. The order of datasets can be specified by providing a list of dataset names to the argument `dataset_order`. Otherwise, the order will be determined by CellTypist through iteratively adding a dataset that is most similar (i.e., more shared cell types) to the datasets already incorporated. This behaviour can be disabled by setting `reorder_dataset = False` (default to `True`) and an alphabetical order of datasets will be used.
+  In CellHint, datasets are iteratively incorporated and harmonised. The order of datasets can be specified by providing a list of dataset names to the argument `dataset_order`. Otherwise, the order will be determined by CellTypist through iteratively adding a dataset that is most similar (i.e., more shared cell types) to the datasets already incorporated. This behaviour can be disabled by setting `reorder_dataset = False` (default to `True`) and an alphabetical order of datasets will be used.
   ```python
   #Specify the order of datasets to be harmonised.
   alignment = celltypist.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', dataset_order = a_list_of_datasets)
@@ -78,7 +71,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>1.4. Categories of harmonised cell types</strong></summary>
 
-  Four kinds of harmonisations are anchored with [celltypist.harmonize](https://celltypist.readthedocs.io/en/latest/celltypist.harmonize.html):
+  Four kinds of harmonisations are anchored with [cellhint.harmonize](https://celltypist.readthedocs.io/en/latest/celltypist.harmonize.html):
      1) Novel cell types as determined by `maximum_novel_percent` (default to `0.05`). In each harmonisation iteration, a cell type (or meta-cell-type) whose maximal alignment fraction is < `maximum_novel_percent` with any cell types in any other datasets is designated as a novel cell type (`NONE`).
      2) One-to-one aligned cell types as determined by `minimum_unique_percents` and `minimum_divide_percents`. If the alignments (in both directions) between two cell types from two respective datasets are greater than `minimum_unique_percents`, plus that these alignments are not one-to-many (see the third point below), this will be an 1:1 (`=`) match. Dynamic thresholds of `minimum_unique_percents` (default to 0.4, 0.5, 0.6, 0.7, 0.8) and `minimum_divide_percents` (default to 0.1, 0.15, 0.2) are exhaustively tested until the least number of alignments is found between datasets.
      3) One-to-many (or many-to-one) aligned cell types as determined by `minimum_unique_percents` and `minimum_divide_percents`. If one cell type has more than two cell types aligned in the other dataset with a match proportion greater than `minimum_divide_percents`, and these matched cell types have a back-match proportion greater than `minimum_unique_percents`, this will be an 1:N (`∋`) or N:1 (`∈`) match. Dynamic thresholds of `minimum_unique_percents` (default to 0.4, 0.5, 0.6, 0.7, 0.8) and `minimum_divide_percents` (default to 0.1, 0.15, 0.2) are exhaustively tested until the least number of alignments is found between datasets.
@@ -100,7 +93,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>2.1. Harmonisation table</strong></summary>
 
-  The previously saved harmonisation object can be loaded using `celltypist.DistanceAlignment.load`.
+  The previously saved harmonisation object can be loaded using `cellhint.DistanceAlignment.load`.
   ```python
   alignment = celltypist.DistanceAlignment.load('/path/to/local/folder/some_name.pkl')
   ```
@@ -190,7 +183,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>3.1. Change the dataset order</strong></summary>
 
-  The order of datasets used by `celltypist.harmonize` can be found in the attribute `.dataset_order` (`alignment.dataset_order`), which is either auto-determined by CellTypist or specified by the user (via the `dataset_order` parameter in `celltypist.harmonize`). This order is also reflected by the column order of the harmonisation table.  
+  The order of datasets used by `cellhint.harmonize` can be found in the attribute `.dataset_order` (`alignment.dataset_order`), which is either auto-determined by CellTypist or specified by the user (via the `dataset_order` parameter in `celltypist.harmonize`). This order is also reflected by the column order of the harmonisation table.  
     
   Along the order of datasets, optimal choices of `minimum_unique_percents` and `minimum_divide_percents` (see `1.4.`) in each iteration can be found in `alignment.minimum_unique_percents` and `alignment.minimum_divide_percents`. For instance, harmonising five datasets requires four iterations, and thus both `.minimum_unique_percents` and `.minimum_divide_percents` have a length of four.  
     
@@ -199,7 +192,7 @@ conda install -c bioconda -c conda-forge celltypist
   #Reharmonise cell types across datasets with a different dataset order.
   alignment.best_align(dataset_order = a_list_of_new_dataset_order)
   ```
-  As in `celltypist.harmonize`, the combos of `minimum_unique_percents` and `minimum_divide_percents` will be tested to find the best alignment in each iteration. Importantly, as well as a full dataset list, you can provide a subset of datasets for reharmonisation. This is useful in terms of focusing on part of the data for inspection or visualisation (see `4.`).
+  As in `cellhint.harmonize`, the combos of `minimum_unique_percents` and `minimum_divide_percents` will be tested to find the best alignment in each iteration. Importantly, as well as a full dataset list, you can provide a subset of datasets for reharmonisation. This is useful in terms of focusing on part of the data for inspection or visualisation (see `4.`).
   ```python
   #Reharmonise cell types across datasets with part of datasets.
   alignment.best_align(dataset_order = a_subset_of_dataset_names)
@@ -225,7 +218,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>4.1. Tree plot</strong></summary>
 
-  The most intuitive way to visualise the harmonised cell types is the tree plot using the function [celltypist.treeplot](https://celltypist.readthedocs.io/en/latest/celltypist.treeplot.html).
+  The most intuitive way to visualise the harmonised cell types is the tree plot using the function [cellhint.treeplot](https://celltypist.readthedocs.io/en/latest/celltypist.treeplot.html).
   ```python
   #Visualise the harmonisation result with a tree plot.
   celltypist.treeplot(alignment)
@@ -343,7 +336,7 @@ conda install -c bioconda -c conda-forge celltypist
 + <details>
   <summary><strong>2.1. Partial annotation</strong></summary>
 
-  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `celltypist.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellTypist (definition of symbols can be found [here](https://github.com/Teichlab/celltypist/blob/main/celltypist/contro/symbols.py)).
+  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `cellhint.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellTypist (definition of symbols can be found [here](https://github.com/Teichlab/celltypist/blob/main/celltypist/contro/symbols.py)).
   </details>
 
 + <details>
@@ -367,12 +360,12 @@ conda install -c bioconda -c conda-forge celltypist
   `celltypist.integrate` requires cell annotation to be stored in the AnnData. This information can be obtained by different means. One quick way is to use available CellTypist models to annotate the data of interest (see the CellTypist model list [here](https://www.celltypist.org/models)).
   ```python
   #Annotate the data with a relevant model (immune model as an example here).
-  adata = celltypist.annotate(adata, model = 'Immune_All_Low.pkl', majority_voting = True).to_adata()
+  adata = cellhint.annotate(adata, model = 'Immune_All_Low.pkl', majority_voting = True).to_adata()
   ```
   Then integrate cells on the basis of the predicted cell types.
   ```python
   #`cell_type` can also be 'majority_voting'.
-  celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'predicted_labels')
+  cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'predicted_labels')
   ```
   Even the model does not exactly match the data (e.g., using an immune model to annotate a lung data), this approach can be still useful as cells from the same cell type will probably be assigned the same identity by the model, therefore containing information with respect to which cells should be placed together in the neighborhood graph.
   </details>
