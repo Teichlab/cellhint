@@ -13,13 +13,13 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Required imports --------------------------------------------------------
 from datetime import datetime
-import celltypist
+import cellhint
 
 # -- Project information -----------------------------------------------------
-project = 'celltypist'
+project = 'cellhint'
 author = 'Chuan Xu'
 copyright = f'{datetime.now():%Y}, {author}'
-release = celltypist.__version__
+release = cellhint.__version__
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -57,8 +57,8 @@ html_theme_options = {'logo_only': True}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-html_logo = "_static/img/logo_celltypist.png"
-html_favicon = "_static/img/logo_celltypist.png"
+html_logo = "_static/img/logo_cellhint.png"
+html_favicon = "_static/img/logo_cellhint.png"
 
 # -- Extension configuration -------------------------------------------------
 napoleon_numpy_docstring = True
