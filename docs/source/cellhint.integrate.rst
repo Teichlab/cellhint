@@ -1,4 +1,4 @@
 Integration function
 -----------------------
 
-.. autofunction:: celltypist.integrate
+.. autofunction:: cellhint.integrate

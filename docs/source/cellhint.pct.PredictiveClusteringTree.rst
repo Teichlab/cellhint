@@ -1,7 +1,7 @@
 Tree structure
 ----------------------------
 
-.. autoclass:: celltypist.contro.pct.PredictiveClusteringTree
+.. autoclass:: cellhint.pct.PredictiveClusteringTree
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,4 +1,4 @@
 Sankey plot function
 -----------------------
 
-.. autofunction:: celltypist.sankeyplot
+.. autofunction:: cellhint.sankeyplot

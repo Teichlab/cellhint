@@ -1,4 +1,4 @@
 Harmonisation function
 -----------------------
 
-.. autofunction:: celltypist.harmonize
+.. autofunction:: cellhint.harmonize

@@ -1,7 +1,7 @@
 Harmonisation result
 ----------------------------
 
-.. autoclass:: celltypist.contro.align.DistanceAlignment
+.. autoclass:: cellhint.align.DistanceAlignment
    :members:
    :undoc-members:
    :show-inheritance:

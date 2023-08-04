@@ -1,4 +1,4 @@
 Tree plot function
 -----------------------
 
-.. autofunction:: celltypist.treeplot
+.. autofunction:: cellhint.treeplot

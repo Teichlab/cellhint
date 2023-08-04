@@ -1,7 +1,7 @@
 Distance structure
 ----------------------------
 
-.. autoclass:: celltypist.contro.distance.Distance
+.. autoclass:: cellhint.distance.Distance
    :members:
    :undoc-members:
    :show-inheritance:
