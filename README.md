@@ -1,4 +1,4 @@
-<p align="left"><img src="https://github.com/Teichlab/celltypist/blob/main/docs/source/_static/img/logo_celltypist.png" width="250" height="85"></p>
+<p align="left"><img src="https://github.com/Teichlab/cellhint/blob/main/docs/source/_static/img/logo_cellhint.png" width="250" height="85"></p>
 
 [![Python Versions](https://img.shields.io/badge/python-3.6+-brightgreen.svg)](https://pypi.org/project/cellhint) [![Documentation Status](https://readthedocs.org/projects/cellhint/badge/?version=latest)](https://cellhint.readthedocs.io/en/latest/?badge=latest)
 
@@ -8,9 +8,9 @@ CellHint is an automated tool for cell type harmonisation and integration.
 
 # Interactive tutorials
 ### Harmonisation
-[Using CellHint for cell type harmonisation ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_harmonisation.ipynb)
+[Using CellHint for cell type harmonisation ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/cellhint/blob/main/docs/notebook/cellhint_tutorial_harmonisation.ipynb)
 ### Integration
-[Using CellHint for annotation-aware data integration ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_integration.ipynb)
+[Using CellHint for annotation-aware data integration ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/cellhint/blob/main/docs/notebook/cellhint_tutorial_integration.ipynb)
 
 # Install CellHint
 ### Using pip [![PyPI](https://img.shields.io/pypi/v/cellhint.svg?color=brightgreen&style=flat)](https://pypi.org/project/cellhint)
@@ -31,7 +31,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>1.1. Cell type harmonisation</strong></summary>
 
-  The input [AnnData](https://anndata.readthedocs.io/en/latest/) needs two columns in `.obs` representing dataset origin and cell original annotation respectively. The aim is to harmonise cell types across datasets using [cellhint.harmonize](https://celltypist.readthedocs.io/en/latest/celltypist.harmonize.html).  
+  The input [AnnData](https://anndata.readthedocs.io/en/latest/) needs two columns in `.obs` representing dataset origin and cell original annotation respectively. The aim is to harmonise cell types across datasets using [cellhint.harmonize](https://cellhint.readthedocs.io/en/latest/cellhint.harmonize.html).  
     
   Internally, transcriptional distances between cells and cell types (denoted here as the cell centroid) will first be calculated. Since cell type is usually defined at the cluster level and no cluster is 100% pure, you can set `filter_cells = True` (default to `False`) to filter out cells whose gene expression profiles do not correlate most with the cell type they belong to. This will speed up the run as only a subset of cells are used, but will render these filtered cells unannotated (see `2.2.`). Distances are calculated at either gene or low-dimensional space. The latter is preferred to denoise the data by providing a latent representation via the argument `use_rep` (default to PCA coordinates).
   ```python
@@ -40,7 +40,7 @@ conda install -c bioconda -c conda-forge cellhint
   ```
   If `X_pca` is not detected in `.obsm` and no other latent representations are provided via `use_rep`, gene expression matrix in `.X` will be used to calculate the distances. In such case, subsetting the AnnData to informative genes (e.g. highly variable genes) is suggested and `.X` should be log-normalised (to a constant total count per cell).  
     
-  The resulting `alignment` is an instance of the class [DistanceAlignment](https://celltypist.readthedocs.io/en/latest/celltypist.contro.align.DistanceAlignment.html) as defined by CellTypist, and can be written out as follows.
+  The resulting `alignment` is an instance of the class [DistanceAlignment](https://cellhint.readthedocs.io/en/latest/cellhint.align.DistanceAlignment.html) as defined by CellHint, and can be written out as follows.
   ```python
   #Save the harmonisation output.
   alignment.write('/path/to/local/folder/some_name.pkl')
@@ -61,7 +61,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>1.3. Specify the dataset order</strong></summary>
 
-  In CellHint, datasets are iteratively incorporated and harmonised. The order of datasets can be specified by providing a list of dataset names to the argument `dataset_order`. Otherwise, the order will be determined by CellTypist through iteratively adding a dataset that is most similar (i.e., more shared cell types) to the datasets already incorporated. This behaviour can be disabled by setting `reorder_dataset = False` (default to `True`) and an alphabetical order of datasets will be used.
+  In CellHint, datasets are iteratively incorporated and harmonised. The order of datasets can be specified by providing a list of dataset names to the argument `dataset_order`. Otherwise, the order will be determined by CellHint through iteratively adding a dataset that is most similar (i.e., more shared cell types) to the datasets already incorporated. This behaviour can be disabled by setting `reorder_dataset = False` (default to `True`) and an alphabetical order of datasets will be used.
   ```python
   #Specify the order of datasets to be harmonised.
   alignment = cellhint.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', dataset_order = a_list_of_datasets)
@@ -71,7 +71,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>1.4. Categories of harmonised cell types</strong></summary>
 
-  Four kinds of harmonisations are anchored with [cellhint.harmonize](https://celltypist.readthedocs.io/en/latest/celltypist.harmonize.html):
+  Four kinds of harmonisations are anchored with [cellhint.harmonize](https://cellhint.readthedocs.io/en/latest/cellhint.harmonize.html):
      1) Novel cell types as determined by `maximum_novel_percent` (default to `0.05`). In each harmonisation iteration, a cell type (or meta-cell-type) whose maximal alignment fraction is < `maximum_novel_percent` with any cell types in any other datasets is designated as a novel cell type (`NONE`).
      2) One-to-one aligned cell types as determined by `minimum_unique_percents` and `minimum_divide_percents`. If the alignments (in both directions) between two cell types from two respective datasets are greater than `minimum_unique_percents`, plus that these alignments are not one-to-many (see the third point below), this will be an 1:1 (`=`) match. Dynamic thresholds of `minimum_unique_percents` (default to 0.4, 0.5, 0.6, 0.7, 0.8) and `minimum_divide_percents` (default to 0.1, 0.15, 0.2) are exhaustively tested until the least number of alignments is found between datasets.
      3) One-to-many (or many-to-one) aligned cell types as determined by `minimum_unique_percents` and `minimum_divide_percents`. If one cell type has more than two cell types aligned in the other dataset with a match proportion greater than `minimum_divide_percents`, and these matched cell types have a back-match proportion greater than `minimum_unique_percents`, this will be an 1:N (`∋`) or N:1 (`∈`) match. Dynamic thresholds of `minimum_unique_percents` (default to 0.4, 0.5, 0.6, 0.7, 0.8) and `minimum_divide_percents` (default to 0.1, 0.15, 0.2) are exhaustively tested until the least number of alignments is found between datasets.
@@ -116,7 +116,7 @@ conda install -c bioconda -c conda-forge cellhint
     
   Extending this interpretation to the third and fourth rows, they denote two cell types (E and F) in dataset1 collectively constituting the cell type G in dataset2. The resulting subtypes (`E ∈ G` and `F ∈ G`) are 1:1 matched with H and I in dataset3, respectively. For the last two rows, they describe the subdivision of a meta cell type (`J = K`) into L and M in dataset3, being more than a subdivision of K.  
     
-  In the table, each row corresponds to a harmonised low-hierarchy cell type, in other words, the most fine-grained level of annotation that can be achieved by automatic alignment. At a high hierarchy, some cell types such as `E ∈ G = H` and `F ∈ G = I` belong to the same group. CellTypist defines a high-hierarchy cell type as fully connected rows in the harmonisation table. As a result, each high-hierarchy cell type is a cell type group independent of each other. This information can be accessed in the attribute `.groups` which is an array/vector with an length of the number of rows in the harmonisation table.
+  In the table, each row corresponds to a harmonised low-hierarchy cell type, in other words, the most fine-grained level of annotation that can be achieved by automatic alignment. At a high hierarchy, some cell types such as `E ∈ G = H` and `F ∈ G = I` belong to the same group. CellHint defines a high-hierarchy cell type as fully connected rows in the harmonisation table. As a result, each high-hierarchy cell type is a cell type group independent of each other. This information can be accessed in the attribute `.groups` which is an array/vector with an length of the number of rows in the harmonisation table.
   ```python
   #Access the high-hierarchy cell types (cell type groups).
   alignment.groups
@@ -150,7 +150,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>2.3. Meta-analysis</strong></summary>
 
-  A distance matrix-like instance, which is from the class [Distance](https://celltypist.readthedocs.io/en/latest/celltypist.contro.distance.Distance.html) as defined by CellTypist, is also stashed in `alignment` as the attribute `.base_distance`.
+  A distance matrix-like instance, which is from the class [Distance](https://celltypist.readthedocs.io/en/latest/celltypist.contro.distance.Distance.html) as defined by CellHint, is also stashed in `alignment` as the attribute `.base_distance`.
   ```python
   #Access the distance object.
   alignment.base_distance
@@ -164,7 +164,7 @@ conda install -c bioconda -c conda-forge cellhint
   ```
   Each column (corresponding to one dataset) of the assignment matrix can be thought as a unified naming schema when all cells are named by this given dataset.  
     
-  CellTypist provides a quick way to summarise the above information including cells' distances and assignments into meta-analysis at the cell type level. Specifically, a distance matrix among all cell types can be obtained by:
+  CellHint provides a quick way to summarise the above information including cells' distances and assignments into meta-analysis at the cell type level. Specifically, a distance matrix among all cell types can be obtained by:
   ```python
   #Get the cell-type-to-cell-type distance matrix.
   alignment.base_distance.to_meta()
@@ -183,11 +183,11 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>3.1. Change the dataset order</strong></summary>
 
-  The order of datasets used by `cellhint.harmonize` can be found in the attribute `.dataset_order` (`alignment.dataset_order`), which is either auto-determined by CellTypist or specified by the user (via the `dataset_order` parameter in `cellhint.harmonize`). This order is also reflected by the column order of the harmonisation table.  
+  The order of datasets used by `cellhint.harmonize` can be found in the attribute `.dataset_order` (`alignment.dataset_order`), which is either auto-determined by CellHint or specified by the user (via the `dataset_order` parameter in `cellhint.harmonize`). This order is also reflected by the column order of the harmonisation table.  
     
   Along the order of datasets, optimal choices of `minimum_unique_percents` and `minimum_divide_percents` (see `1.4.`) in each iteration can be found in `alignment.minimum_unique_percents` and `alignment.minimum_divide_percents`. For instance, harmonising five datasets requires four iterations, and thus both `.minimum_unique_percents` and `.minimum_divide_percents` have a length of four.  
     
-  CellTypist provides a method [best_align](https://celltypist.readthedocs.io/en/latest/celltypist.contro.align.DistanceAlignment.html#celltypist.contro.align.DistanceAlignment.best_align) to change the order of datasets post-harmonisation. Through this, datasets will be reharmonised in a different order (this post-harmonisation adjustment is more efficient than re-running `cellhint.harmonize` with a new order).
+  CellHint provides a method [best_align](https://celltypist.readthedocs.io/en/latest/celltypist.contro.align.DistanceAlignment.html#celltypist.contro.align.DistanceAlignment.best_align) to change the order of datasets post-harmonisation. Through this, datasets will be reharmonised in a different order (this post-harmonisation adjustment is more efficient than re-running `cellhint.harmonize` with a new order).
   ```python
   #Reharmonise cell types across datasets with a different dataset order.
   alignment.best_align(dataset_order = a_list_of_new_dataset_order)
@@ -262,7 +262,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>4.2. Sankey plot</strong></summary>
 
-  The other way to visualise harmonised cell types is the Sankey plot by [cellhint.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html). CellTypist builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellTypist, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
+  The other way to visualise harmonised cell types is the Sankey plot by [cellhint.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html). CellHint builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellHint, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
   ```python
   #Visualise the harmonisation result with a Sankey plot.
   #As with the tree plot, the input can also be a harmonisation table.
@@ -295,12 +295,12 @@ conda install -c bioconda -c conda-forge cellhint
   #Integrate cells with `cellhint.integrate`.
   cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key')
   ```
-  With this function, CellTypist will build the neighborhood graph by searching neighbors across matched cell groups in different batches, on the basis of a low-dimensional representation provided via the argument `use_rep` (default to PCA coordinates).
+  With this function, CellHint will build the neighborhood graph by searching neighbors across matched cell groups in different batches, on the basis of a low-dimensional representation provided via the argument `use_rep` (default to PCA coordinates).
   ```python
   #`use_rep` can be omitted here as it defaults to 'X_pca'.
   cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', use_rep = 'X_pca')
   ```
-  The batch confounder can be the dataset origin, donor ID, or any relevant covariate. For the biological factor, it is the consistent annotation across cells, such as manual annotations of all cells, transferred cell type labels from a single reference model, and as an example here, the harmonised cell types from the CellTypist harmonisation pipeline (see the harmonisation section). Specifically, you can add two extra columns in the `.obs` of the input AnnData using the reannotation information from `alignment.reannotation`.
+  The batch confounder can be the dataset origin, donor ID, or any relevant covariate. For the biological factor, it is the consistent annotation across cells, such as manual annotations of all cells, transferred cell type labels from a single reference model, and as an example here, the harmonised cell types from the CellHint harmonisation pipeline (see the harmonisation section). Specifically, you can add two extra columns in the `.obs` of the input AnnData using the reannotation information from `alignment.reannotation`.
   ```python
   #Insert low- and high-hierarchy annotations into the AnnData.
   adata.obs[['harmonized_low', 'harmonized_high']] = alignment.reannotation.loc[adata.obs_names, ['reannotation', 'group']]
@@ -326,7 +326,7 @@ conda install -c bioconda -c conda-forge cellhint
   #Actually the default value of `n_meta_neighbors` is 3.
   cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', n_meta_neighbors = 3)
   ```
-  With `n_meta_neighbors` of 1, each cell type only has one neighboring cell type, that is, itself. This will result in strongly separated cell types in the final UMAP. Increasing `n_meta_neighbors` will loosen this restriction. For example, a `n_meta_neighbors` of 2 allows each cell type to have, in addition to itself, one nearest neighboring cell type based on the transcriptomic distances calculated by CellTypist. This parameter defaults to 3, meaning that a linear spectrum of transcriptomic structure can possibly exist for each cell type.
+  With `n_meta_neighbors` of 1, each cell type only has one neighboring cell type, that is, itself. This will result in strongly separated cell types in the final UMAP. Increasing `n_meta_neighbors` will loosen this restriction. For example, a `n_meta_neighbors` of 2 allows each cell type to have, in addition to itself, one nearest neighboring cell type based on the transcriptomic distances calculated by CellHint. This parameter defaults to 3, meaning that a linear spectrum of transcriptomic structure can possibly exist for each cell type.
   </details>
 </details>
 
@@ -336,7 +336,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>2.1. Partial annotation</strong></summary>
 
-  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `cellhint.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellTypist (definition of symbols can be found [here](https://github.com/Teichlab/celltypist/blob/main/celltypist/contro/symbols.py)).
+  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `cellhint.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellHint (definition of symbols can be found [here](https://github.com/Teichlab/celltypist/blob/main/celltypist/contro/symbols.py)).
   </details>
 
 + <details>
@@ -344,7 +344,7 @@ conda install -c bioconda -c conda-forge cellhint
 
   When an abundant cell type is annotated/distributed across multiple batches (e.g., datasets), sometimes not all batches can harbour adequate numbers. This leads to a rare cell type defined within the context of a specific batch. During neighborhood construction, if this batch cannot provide enough neighboring cells for this cell type, search space will be expanded to all cells in this batch.  
     
-  Although this represents a safe solution in CellTypist to anchor nearest neighbors for rare cell types, runtime of the algorithm will be increased and cells from this cell type may not be robustly clustered. Keeping them is fine for CellTypist, but you can also remove such rare cell types in associated batches before running `celltypist.integrate` (a cell type with only a small number in a given batch naturally means that this batch may not be qualified for hosting this cell type). Example code is:
+  Although this represents a safe solution in CellHint to anchor nearest neighbors for rare cell types, runtime of the algorithm will be increased and cells from this cell type may not be robustly clustered. Keeping them is fine for CellHint, but you can also remove such rare cell types in associated batches before running `celltypist.integrate` (a cell type with only a small number in a given batch naturally means that this batch may not be qualified for hosting this cell type). Example code is:
   ```python
   #Remove cells from cell types that have <=5 cells in a batch.
   combined = adata.obs['a_batch_key'].astype(str) + adata.obs['a_celltype_key'].astype(str)
