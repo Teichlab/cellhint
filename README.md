@@ -126,7 +126,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>2.2. Cell reannotation</strong></summary>
 
-  After cell type harmonisation, each cell can be assigned a cell type label corresponding to a given row of the harmonisation table, denoted as the process of cell reannotation. By default, reannotation is enabled (`reannotate = True`) when using [cellhint.harmonize](https://celltypist.readthedocs.io/en/latest/celltypist.harmonize.html) and information of reannotated cell types is already in place as the attribute `.reannotation`.
+  After cell type harmonisation, each cell can be assigned a cell type label corresponding to a given row of the harmonisation table, denoted as the process of cell reannotation. By default, reannotation is enabled (`reannotate = True`) when using [cellhint.harmonize](https://cellhint.readthedocs.io/en/latest/cellhint.harmonize.html) and information of reannotated cell types is already in place as the attribute `.reannotation`.
   ```python
   #Access the cell reannotation information.
   alignment.reannotation
@@ -150,7 +150,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>2.3. Meta-analysis</strong></summary>
 
-  A distance matrix-like instance, which is from the class [Distance](https://celltypist.readthedocs.io/en/latest/celltypist.contro.distance.Distance.html) as defined by CellHint, is also stashed in `alignment` as the attribute `.base_distance`.
+  A distance matrix-like instance, which is from the class [Distance](https://cellhint.readthedocs.io/en/latest/cellhint.distance.Distance.html) as defined by CellHint, is also stashed in `alignment` as the attribute `.base_distance`.
   ```python
   #Access the distance object.
   alignment.base_distance
@@ -187,7 +187,7 @@ conda install -c bioconda -c conda-forge cellhint
     
   Along the order of datasets, optimal choices of `minimum_unique_percents` and `minimum_divide_percents` (see `1.4.`) in each iteration can be found in `alignment.minimum_unique_percents` and `alignment.minimum_divide_percents`. For instance, harmonising five datasets requires four iterations, and thus both `.minimum_unique_percents` and `.minimum_divide_percents` have a length of four.  
     
-  CellHint provides a method [best_align](https://celltypist.readthedocs.io/en/latest/celltypist.contro.align.DistanceAlignment.html#celltypist.contro.align.DistanceAlignment.best_align) to change the order of datasets post-harmonisation. Through this, datasets will be reharmonised in a different order (this post-harmonisation adjustment is more efficient than re-running `cellhint.harmonize` with a new order).
+  CellHint provides a method [best_align](https://cellhint.readthedocs.io/en/latest/cellhint.align.DistanceAlignment.html#cellhint.align.DistanceAlignment.best_align) to change the order of datasets post-harmonisation. Through this, datasets will be reharmonised in a different order (this post-harmonisation adjustment is more efficient than re-running `cellhint.harmonize` with a new order).
   ```python
   #Reharmonise cell types across datasets with a different dataset order.
   alignment.best_align(dataset_order = a_list_of_new_dataset_order)
@@ -203,7 +203,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>3.2. Reannotation</strong></summary>
 
-  After changing the dataset order and reharmonising cell types, cells need to be reannotated based on the newly generated harmonisation table using the method [reannotate](https://celltypist.readthedocs.io/en/latest/celltypist.contro.align.DistanceAlignment.html#celltypist.contro.align.DistanceAlignment.reannotate).
+  After changing the dataset order and reharmonising cell types, cells need to be reannotated based on the newly generated harmonisation table using the method [reannotate](https://cellhint.readthedocs.io/en/latest/cellhint.align.DistanceAlignment.html#cellhint.align.DistanceAlignment.reannotate).
   ```python
   #Reannotate cells based on the new harmonisation table.
   alignment.reannotate()
@@ -237,7 +237,7 @@ conda install -c bioconda -c conda-forge cellhint
   #Visualise the harmonisation result only for cell types (rows) of interest.
   cellhint.treeplot(HT[row_flag])
   ```
-  In a tree plot, each column is a dataset and cell types are connected across datasets. By default, cell types belonging to one low hierarchy (one row in the harmonisation table) are in the same color. You can change the color scheme by providing a data frame to the `node_color` parameter, with three consecutive columns representing dataset, cell type, and color (in hex code), respectively. `node_color` can also be a data frame with columns of dataset, cell type, and numeric value (for mapping color gradient in combination with `cmap`). Other parameters controlling the appearance of the tree plot (node shape, line width, label size, figure size, etc.) are detailed in [cellhint.treeplot](https://celltypist.readthedocs.io/en/latest/celltypist.treeplot.html).  
+  In a tree plot, each column is a dataset and cell types are connected across datasets. By default, cell types belonging to one low hierarchy (one row in the harmonisation table) are in the same color. You can change the color scheme by providing a data frame to the `node_color` parameter, with three consecutive columns representing dataset, cell type, and color (in hex code), respectively. `node_color` can also be a data frame with columns of dataset, cell type, and numeric value (for mapping color gradient in combination with `cmap`). Other parameters controlling the appearance of the tree plot (node shape, line width, label size, figure size, etc.) are detailed in [cellhint.treeplot](https://cellhint.readthedocs.io/en/latest/cellhint.treeplot.html).  
   |The tree plot considers all pairs of reference-to-query assignments. Therefore, a restricted representation in two dimensionalities may overlay some cell types when they have complex 1:1 and 1:N intersections. These cross-connections are usually not solvable at 2D space; you may need to revisit the harmonisation table in some cases.|
   |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
     
@@ -262,13 +262,13 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>4.2. Sankey plot</strong></summary>
 
-  The other way to visualise harmonised cell types is the Sankey plot by [cellhint.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html). CellHint builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellHint, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
+  The other way to visualise harmonised cell types is the Sankey plot by [cellhint.sankeyplot](https://cellhint.readthedocs.io/en/latest/cellhint.sankeyplot.html). CellHint builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellHint, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
   ```python
   #Visualise the harmonisation result with a Sankey plot.
   #As with the tree plot, the input can also be a harmonisation table.
   cellhint.sankeyplot(alignment)
   ```
-  Similar to the tree plot, this diagram shows how cell types are connected across datasets. Parameters controlling the appearance of the Sankey plot (node color, link color, figure size, etc.) are detailed in [cellhint.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html).  
+  Similar to the tree plot, this diagram shows how cell types are connected across datasets. Parameters controlling the appearance of the Sankey plot (node color, link color, figure size, etc.) are detailed in [cellhint.sankeyplot](https://cellhint.readthedocs.io/en/latest/cellhint.sankeyplot.html).  
     
   Different from the tree plot where novel (`NONE`) and unharmonised (`UNRESOLVED`) cell types are blank, in the Sankey plot they are colored in white and light grey, respectively. You can adjust these by changing the values of `novel_node_color` and `remain_node_color`.  
     
@@ -290,7 +290,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>1.1. Specify batch and biological covariates</strong></summary>
 
-  The input [AnnData](https://anndata.readthedocs.io/en/latest/) needs two columns in `.obs` representing the batch confounder and unified cell annotation respectively. The aim is to integrate cells by correcting batches and preserving biology (cell annotation) using [cellhint.integrate](https://celltypist.readthedocs.io/en/latest/celltypist.integrate.html).
+  The input [AnnData](https://anndata.readthedocs.io/en/latest/) needs two columns in `.obs` representing the batch confounder and unified cell annotation respectively. The aim is to integrate cells by correcting batches and preserving biology (cell annotation) using [cellhint.integrate](https://cellhint.readthedocs.io/en/latest/cellhint.integrate.html).
   ```python
   #Integrate cells with `cellhint.integrate`.
   cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key')
@@ -336,7 +336,7 @@ conda install -c bioconda -c conda-forge cellhint
 + <details>
   <summary><strong>2.1. Partial annotation</strong></summary>
 
-  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `cellhint.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellHint (definition of symbols can be found [here](https://github.com/Teichlab/celltypist/blob/main/celltypist/contro/symbols.py)).
+  Partial annotation (an `.obs` column combining annotated and unannotated cells) is allowed as the `cell_type` parameter of `cellhint.integrate`. You need to explicitly name unannotated cells as `'UNASSIGNED'` for use in CellHint (definition of symbols can be found [here](https://github.com/Teichlab/cellhint/blob/main/cellhint/symbols.py)).
   </details>
 
 + <details>
@@ -344,7 +344,7 @@ conda install -c bioconda -c conda-forge cellhint
 
   When an abundant cell type is annotated/distributed across multiple batches (e.g., datasets), sometimes not all batches can harbour adequate numbers. This leads to a rare cell type defined within the context of a specific batch. During neighborhood construction, if this batch cannot provide enough neighboring cells for this cell type, search space will be expanded to all cells in this batch.  
     
-  Although this represents a safe solution in CellHint to anchor nearest neighbors for rare cell types, runtime of the algorithm will be increased and cells from this cell type may not be robustly clustered. Keeping them is fine for CellHint, but you can also remove such rare cell types in associated batches before running `celltypist.integrate` (a cell type with only a small number in a given batch naturally means that this batch may not be qualified for hosting this cell type). Example code is:
+  Although this represents a safe solution in CellHint to anchor nearest neighbors for rare cell types, runtime of the algorithm will be increased and cells from this cell type may not be robustly clustered. Keeping them is fine for CellHint, but you can also remove such rare cell types in associated batches before running `cellhint.integrate` (a cell type with only a small number in a given batch naturally means that this batch may not be qualified for hosting this cell type). Example code is:
   ```python
   #Remove cells from cell types that have <=5 cells in a batch.
   combined = adata.obs['a_batch_key'].astype(str) + adata.obs['a_celltype_key'].astype(str)
