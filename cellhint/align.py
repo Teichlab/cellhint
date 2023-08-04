@@ -188,7 +188,7 @@ class DistanceAlignment():
 
     def reorder_dataset(self, weights: Union[list, tuple, np.ndarray, pd.Series, pd.Index] = (2, 1, -1, -2), return_similarity: bool = False) -> Union[None, pd.DataFrame]:
         """
-        Reorder the datasets such that similar datasets will be harmonized first. This method can also be used to calculate CellTypist-defined inter-dataset similarities.
+        Reorder the datasets such that similar datasets will be harmonized first. This method can also be used to calculate CellHint-defined inter-dataset similarities.
 
         Parameters
         ----------
