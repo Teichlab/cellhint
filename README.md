@@ -13,12 +13,12 @@ CellHint is an automated tool for cell type harmonisation and integration.
 [Using CellHint for annotation-aware data integration ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teichlab/celltypist/blob/main/docs/notebook/celltypist_tutorial_integration.ipynb)
 
 # Install CellHint
-### Using pip [![PyPI](https://img.shields.io/pypi/v/celltypist.svg?color=brightgreen&style=flat)](https://pypi.org/project/cellhint)
+### Using pip [![PyPI](https://img.shields.io/pypi/v/cellhint.svg?color=brightgreen&style=flat)](https://pypi.org/project/cellhint)
 ```console
 pip install cellhint
 ```
 
-### Using conda [![install with bioconda](https://img.shields.io/conda/vn/bioconda/celltypist.svg?color=brightgreen&style=flat)](https://anaconda.org/bioconda/cellhint)
+### Using conda [![install with bioconda](https://img.shields.io/conda/vn/bioconda/cellhint.svg?color=brightgreen&style=flat)](https://anaconda.org/bioconda/cellhint)
 ```console
 conda install -c bioconda -c conda-forge cellhint
 ```
@@ -36,7 +36,7 @@ conda install -c bioconda -c conda-forge cellhint
   Internally, transcriptional distances between cells and cell types (denoted here as the cell centroid) will first be calculated. Since cell type is usually defined at the cluster level and no cluster is 100% pure, you can set `filter_cells = True` (default to `False`) to filter out cells whose gene expression profiles do not correlate most with the cell type they belong to. This will speed up the run as only a subset of cells are used, but will render these filtered cells unannotated (see `2.2.`). Distances are calculated at either gene or low-dimensional space. The latter is preferred to denoise the data by providing a latent representation via the argument `use_rep` (default to PCA coordinates).
   ```python
   #`use_rep` can be omitted here as it defaults to 'X_pca'.
-  alignment = celltypist.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca')
+  alignment = cellhint.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca')
   ```
   If `X_pca` is not detected in `.obsm` and no other latent representations are provided via `use_rep`, gene expression matrix in `.X` will be used to calculate the distances. In such case, subsetting the AnnData to informative genes (e.g. highly variable genes) is suggested and `.X` should be log-normalised (to a constant total count per cell).  
     
@@ -53,7 +53,7 @@ conda install -c bioconda -c conda-forge cellhint
   Inferring cell type relationships based on directly calculated distances will suffice in most cases due to a normalisation procedure applied to the derived distances. If a very strong batch effect exists across datasets, you can turn on `use_pct = True` (default to `False`) to predict instead of calculate these distances. Through this parameter, a predictive clustering tree (PCT) is built for each dataset, and distances between cells in query datasets and cell types in the reference dataset are predicted, often resulting in unbiased distance measures.
   ```python
   #Use PCT to predict transcriptional cell-cell distances across datasets.
-  alignment = celltypist.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', use_pct = True)
+  alignment = cellhint.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', use_pct = True)
   ```
   Due to the nonparametric nature of PCT, the format of the expression `.X` in the AnnData is flexible (normalised, log-normalised, z-scaled, etc.), but subsetting the AnnData to highly variable genes is always suggested. To avoid overfitting, each PCT is pruned at nodes where no further splits are needed based on F-test, which is turned on by default (`F_test_prune = True`). You can increase the p-value cutoff (default to 0.05, `p_thres = 0.05`) to prune fewer nodes for improved accuracy at the cost of reduced generalisability.
   </details>
@@ -64,7 +64,7 @@ conda install -c bioconda -c conda-forge cellhint
   In CellHint, datasets are iteratively incorporated and harmonised. The order of datasets can be specified by providing a list of dataset names to the argument `dataset_order`. Otherwise, the order will be determined by CellTypist through iteratively adding a dataset that is most similar (i.e., more shared cell types) to the datasets already incorporated. This behaviour can be disabled by setting `reorder_dataset = False` (default to `True`) and an alphabetical order of datasets will be used.
   ```python
   #Specify the order of datasets to be harmonised.
-  alignment = celltypist.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', dataset_order = a_list_of_datasets)
+  alignment = cellhint.harmonize(adata, dataset = 'dataset_column', cell_type = 'celltype_column', use_rep = 'X_pca', dataset_order = a_list_of_datasets)
   ```
   </details>
 
@@ -223,7 +223,7 @@ conda install -c bioconda -c conda-forge cellhint
   #Visualise the harmonisation result with a tree plot.
   celltypist.treeplot(alignment)
   ```
-  Alternatively, since only the harmonisation table (`alignment.relation`) is used when plotting this tree, `celltypist.treeplot` also accepts the input directly from the table. This is more convenient as a table is easier to manipulate, such as writing it out as a csv file and loading it later for tree plot.
+  Alternatively, since only the harmonisation table (`alignment.relation`) is used when plotting this tree, `cellhint.treeplot` also accepts the input directly from the table. This is more convenient as a table is easier to manipulate, such as writing it out as a csv file and loading it later for tree plot.
   ```python
   #Write out the harmonisation table as a csv file.
   #Note - if cell type names contain commas, set a different `sep` here.
@@ -245,28 +245,28 @@ conda install -c bioconda -c conda-forge cellhint
   ```python
   #Visualise the cell type hierarchy.
   #Again, the input can also be a harmonisation table.
-  celltypist.treeplot(alignment, order_dataset = True)
+  cellhint.treeplot(alignment, order_dataset = True)
   ```
   Because each high-hierarchy cell type is independent of each other, the new orders of datasets will be different across groups. To recognise the dataset origin of each cell type within the hierarchy, you can assign the same color or shape to cell types from the same dataset using the parameter `node_color` or `node_shape`. An example is:
   ```python
   #Cell types from the same dataset are in the same shape.
   #`node_shape` should be the same length as no. datasets in the harmonisation table.
-  celltypist.treeplot(alignment, order_dataset = True, node_shape = list_of_shapes)
+  cellhint.treeplot(alignment, order_dataset = True, node_shape = list_of_shapes)
   ```
   Export the plot if needed.
   ```python
-  celltypist.treeplot(alignment, show = False, save = '/path/to/local/folder/some_name.pdf')
+  cellhint.treeplot(alignment, show = False, save = '/path/to/local/folder/some_name.pdf')
   ```
   </details>
 
 + <details>
   <summary><strong>4.2. Sankey plot</strong></summary>
 
-  The other way to visualise harmonised cell types is the Sankey plot by [celltypist.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html). CellTypist builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellTypist, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
+  The other way to visualise harmonised cell types is the Sankey plot by [cellhint.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html). CellTypist builds this plot on the [plotly](https://pypi.org/project/plotly) package. `plotly` is not mandatory when installing CellTypist, so you need to install it first if you want a visualisation form of Sankey diagram (and engines for exporting images such as [kaleido](https://pypi.org/project/kaleido)).
   ```python
   #Visualise the harmonisation result with a Sankey plot.
   #As with the tree plot, the input can also be a harmonisation table.
-  celltypist.sankeyplot(alignment)
+  cellhint.sankeyplot(alignment)
   ```
   Similar to the tree plot, this diagram shows how cell types are connected across datasets. Parameters controlling the appearance of the Sankey plot (node color, link color, figure size, etc.) are detailed in [celltypist.sankeyplot](https://celltypist.readthedocs.io/en/latest/celltypist.sankeyplot.html).  
     
@@ -275,9 +275,9 @@ conda install -c bioconda -c conda-forge cellhint
   Export the plot if needed.
   ```python
   #Export the image into html.
-  celltypist.sankeyplot(alignment, show = False, save = '/path/to/local/folder/some_name.html')
+  cellhint.sankeyplot(alignment, show = False, save = '/path/to/local/folder/some_name.html')
   #Export the image into pdf.
-  celltypist.sankeyplot(alignment, show = False, save = '/path/to/local/folder/some_name.pdf')
+  cellhint.sankeyplot(alignment, show = False, save = '/path/to/local/folder/some_name.pdf')
   ```
   </details>
 </details>
@@ -292,13 +292,13 @@ conda install -c bioconda -c conda-forge cellhint
 
   The input [AnnData](https://anndata.readthedocs.io/en/latest/) needs two columns in `.obs` representing the batch confounder and unified cell annotation respectively. The aim is to integrate cells by correcting batches and preserving biology (cell annotation) using [celltypist.integrate](https://celltypist.readthedocs.io/en/latest/celltypist.integrate.html).
   ```python
-  #Integrate cells with `celltypist.integrate`.
-  celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key')
+  #Integrate cells with `cellhint.integrate`.
+  cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key')
   ```
   With this function, CellTypist will build the neighborhood graph by searching neighbors across matched cell groups in different batches, on the basis of a low-dimensional representation provided via the argument `use_rep` (default to PCA coordinates).
   ```python
   #`use_rep` can be omitted here as it defaults to 'X_pca'.
-  celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', use_rep = 'X_pca')
+  cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', use_rep = 'X_pca')
   ```
   The batch confounder can be the dataset origin, donor ID, or any relevant covariate. For the biological factor, it is the consistent annotation across cells, such as manual annotations of all cells, transferred cell type labels from a single reference model, and as an example here, the harmonised cell types from the CellTypist harmonisation pipeline (see the harmonisation section). Specifically, you can add two extra columns in the `.obs` of the input AnnData using the reannotation information from `alignment.reannotation`.
   ```python
@@ -308,9 +308,9 @@ conda install -c bioconda -c conda-forge cellhint
   Perform data integration using either of the two annotation columns.
   ```python
   #Integrate cells using the reannotated high-hierarchy cell annotation.
-  celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'harmonized_high')
+  cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'harmonized_high')
   #Not run; integrate cells using the reannotated low-hierarchy cell annotation.
-  #celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'harmonized_low')
+  #cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'harmonized_low')
   ```
   Finally, generate a UMAP based on the reconstructed neighborhood graph.
   ```python
@@ -324,7 +324,7 @@ conda install -c bioconda -c conda-forge cellhint
   Influence of cell annotation on the data structure can range from forcibly merging the same cell types to a more lenient cell grouping. This is achieved by adjusting the parameter `n_meta_neighbors`.
   ```python
   #Actually the default value of `n_meta_neighbors` is 3.
-  celltypist.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', n_meta_neighbors = 3)
+  cellhint.integrate(adata, batch = 'a_batch_key', cell_type = 'a_celltype_key', n_meta_neighbors = 3)
   ```
   With `n_meta_neighbors` of 1, each cell type only has one neighboring cell type, that is, itself. This will result in strongly separated cell types in the final UMAP. Increasing `n_meta_neighbors` will loosen this restriction. For example, a `n_meta_neighbors` of 2 allows each cell type to have, in addition to itself, one nearest neighboring cell type based on the transcriptomic distances calculated by CellTypist. This parameter defaults to 3, meaning that a linear spectrum of transcriptomic structure can possibly exist for each cell type.
   </details>
@@ -360,7 +360,7 @@ conda install -c bioconda -c conda-forge cellhint
   `celltypist.integrate` requires cell annotation to be stored in the AnnData. This information can be obtained by different means. One quick way is to use available CellTypist models to annotate the data of interest (see the CellTypist model list [here](https://www.celltypist.org/models)).
   ```python
   #Annotate the data with a relevant model (immune model as an example here).
-  adata = cellhint.annotate(adata, model = 'Immune_All_Low.pkl', majority_voting = True).to_adata()
+  adata = celltypist.annotate(adata, model = 'Immune_All_Low.pkl', majority_voting = True).to_adata()
   ```
   Then integrate cells on the basis of the predicted cell types.
   ```python
