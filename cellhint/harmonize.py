@@ -1,4 +1,5 @@
 from anndata import AnnData
+import scanpy
 from typing import Union, Optional
 import pandas as pd
 import numpy as np
