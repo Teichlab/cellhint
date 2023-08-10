@@ -18,9 +18,9 @@ CellHint is an automated tool for cell type harmonisation and integration.
 pip install cellhint
 ```
 
-### Using conda [![install with bioconda](https://img.shields.io/conda/vn/bioconda/cellhint.svg?color=brightgreen&style=flat)](https://anaconda.org/bioconda/cellhint)
+### Using conda [![install with conda](https://img.shields.io/conda/vn/conda-forge/cellhint.svg?color=brightgreen&style=flat)](https://anaconda.org/conda-forge/cellhint)
 ```console
-conda install -c bioconda -c conda-forge cellhint
+conda install -c conda-forge cellhint
 ```
 
 # Usage (harmonisation)
