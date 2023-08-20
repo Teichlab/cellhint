@@ -102,7 +102,7 @@ def harmonize(adata: AnnData,
         4) :attr:`~cellhint.align.DistanceAlignment.reannotation`, reannotated cell types and cell type groups.
     """
     #raw counts are not allowed to build trees
-    if use_pct and adata.X.min() >= 0 and float(adata.X.max()).is_integer():
+    if use_pct and adata.X[:1000].min() >= 0 and float(adata.X[:1000].max()).is_integer():
         raise ValueError(
                 f"🛑 `.X` of the AnnData is detected to be raw counts, which is not suitable for building PCT")
     #build PCT using all genes is not realistic
