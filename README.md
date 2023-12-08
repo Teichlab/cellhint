@@ -372,4 +372,4 @@ conda install -c conda-forge cellhint
 </details>
 
 # Citation
-Xu et al., Automatic cell type harmonization and integration across Human Cell Atlas datasets. bioRxiv (2023). [Preprint](https://doi.org/10.1101/2023.05.01.538994)  
+Xu et al., Automatic cell type harmonization and integration across Human Cell Atlas datasets. bioRxiv (2023). [Preprint](https://doi.org/10.1101/2023.05.01.538994) [Download datasets used in the manuscript](https://github.com/Teichlab/cellhint/blob/main/datasets.md)
