@@ -45,6 +45,13 @@ Welcome to CellHint's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: API (others):
+   :hidden:
+
+   cellhint.selfmatch
+
+.. toctree::
+   :maxdepth: 2
    :caption: Package organization:
    :hidden:
 
