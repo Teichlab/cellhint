@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from typing import Union, Optional
+from . import logger
 from .symbols import NOVEL, REMAIN
 import sys
 try:
