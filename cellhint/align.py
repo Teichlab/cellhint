@@ -158,10 +158,10 @@ class DistanceAlignment():
         A :class:`~pandas.DataFrame` representing the reannotated cell types.
     minimum_unique_percents
         List of `minimum_unique_percent` values which are used along harmonization iterations in order to get the best alignment.
-        This attribute is obtained through the :func:`~cellhint.align.DistanceAlignment.best_align` function.
+        This attribute is obtained through the :meth:`~cellhint.align.DistanceAlignment.best_align` method.
     minimum_divide_percents
         List of `minimum_divide_percent` values which are used along harmonization iterations in order to get the best alignment.
-        This attribute is obtained through the :func:`~cellhint.align.DistanceAlignment.best_align` function.
+        This attribute is obtained through the :meth:`~cellhint.align.DistanceAlignment.best_align` method.
     """
     def __init__(self, base_distance: Distance, check: bool = True, dataset_order: Optional[Union[list, tuple, np.ndarray, pd.Series, pd.Index]] = None,
                  row_normalize: bool = True, minimum_unique_percent: float = 0.5, minimum_divide_percent: float = 0.1, maximum_novel_percent: float = 0.05):

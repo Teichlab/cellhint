@@ -211,7 +211,7 @@ class Distances():
             Whether to join the distances across datasets after prediction to form an entire :class:`~cellhint.distance.Distance` object.
             (Default: `True`)
         **kwargs
-            Keyword arguments passed to :func:`~cellhint.distance.Distance.normalize`.
+            Keyword arguments passed to :meth:`~cellhint.distance.Distance.normalize`.
 
         Returns
         ----------
