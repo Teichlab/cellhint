@@ -186,7 +186,7 @@ class Distance():
             The :class:`~cellhint.distance.Distance` object modified with a normalized distance matrix.
         """
         if Gaussian_kernel:
-            sds = np.linalg.norm(self.dist_mat, axis = 1) / self.n_cell_type)[:, np.newaxis]
+            sds = np.linalg.norm(self.dist_mat, axis = 1, keepdims = True) / np.sqrt(self.n_cell_type)
             self.dist_mat = np.exp(- self.dist_mat / (2 / sds)**2)
             self.dist_mat = 1 - self.dist_mat / self.dist_mat.sum(axis = 1)[:, np.newaxis]
         if rank:
