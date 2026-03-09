@@ -221,7 +221,7 @@ class Distances():
         new_ds = []
         for i in range(len(self.datasets)):
             dist_mat = self.pcts[i].predict(self.adata[np.concatenate(self.cells[:i] + self.cells[i+1:])].X)
-            cell = pd.concat([x.cell for x in self.distances[:i]+self.distances[i+1:]], axis = 0)
+            cell = pd.concat([d.cell for j, d in enumerate(self.distances) if j != i], axis = 0)
             pred_dis = Distance(dist_mat, cell, self.distances[i].cell_type)
             new_ds.append(self.distances[i].concatenate(pred_dis, by = 'cell'))
         if normalize:

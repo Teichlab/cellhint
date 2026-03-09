@@ -152,7 +152,7 @@ class Distance():
                 col_cs.append(c)
                 col_ds.append(d)
                 m = use_Cell_X[(datasets == d) & (celltypes == c), :].mean(axis = 0)
-                Celltype_X.append(m.A1 if isinstance(m, np.matrix) else m)
+                Celltype_X.append(np.asarray(m).ravel())
         Celltype_X = np.log1p(np.array(Celltype_X)) if use_rep == 'X' else np.array(Celltype_X)
         if metric not in ['cityblock', 'cosine', 'euclidean', 'l1', 'l2', 'manhattan']:
             if isinstance(Cell_X, spmatrix):
@@ -186,13 +186,13 @@ class Distance():
             The :class:`~cellhint.distance.Distance` object modified with a normalized distance matrix.
         """
         if Gaussian_kernel:
-            sds = np.sqrt((self.dist_mat ** 2).sum(axis = 1) / self.n_cell_type)[:, np.newaxis]
+            sds = np.linalg.norm(self.dist_mat, axis = 1) / self.n_cell_type)[:, np.newaxis]
             self.dist_mat = np.exp(- self.dist_mat / (2 / sds)**2)
             self.dist_mat = 1 - self.dist_mat / self.dist_mat.sum(axis = 1)[:, np.newaxis]
         if rank:
             self.dist_mat = rankdata(self.dist_mat).reshape(self.dist_mat.shape)
         if normalize:
-            self.dist_mat = self.dist_mat / self.dist_mat.max()
+            self.dist_mat /= self.dist_mat.max()
 
     def concatenate(self, *distances, by: str = 'cell', check: bool = False):
         """
@@ -320,7 +320,7 @@ class Distance():
         meta_cell = []
         for _, s in self.cell_type.iterrows():
             meta_cell.append(use_mat[(self.cell.dataset == s['dataset']) & (self.cell.cell_type == s['cell_type']), :].mean(axis = 0))
-        meta_cell = pd.DataFrame(np.array(meta_cell))
+        meta_cell = pd.DataFrame(meta_cell)
         meta_cell.index = (self.cell_type.dataset + ': ' + self.cell_type.cell_type).values
         meta_cell.columns = meta_cell.index
         return (meta_cell + meta_cell.T)/2 if return_symmetry else meta_cell
